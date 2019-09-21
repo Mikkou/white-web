@@ -22,11 +22,19 @@
         </nuxt-link>
       </div>
     </div>
-    <nuxt/>
+    <div class="content">
+      <nuxt/>
+    </div>
+
   </v-app>
 </template>
 
 <style>
+
+  .content {
+    height: 100%;
+  }
+
   .logo-registration {
     font-size: 10px;
     padding: 4px;
