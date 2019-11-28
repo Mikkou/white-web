@@ -8,42 +8,109 @@
       justify="center"
     >
       <v-col
-        cols="12"
-        sm="8"
-        md="5"
+        class="registration"
       >
         <v-card
-          class="registration elevation-0 transparent"
+          class="elevation-0 transparent"
         >
-          <v-toolbar
-            color="transparent"
-            dark
-            flat
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
           >
-            <v-toolbar-title class="registration__title">Создать учётную запись</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
+            <v-toolbar
+              color="transparent"
+              dark
+              flat
+            >
+              <v-toolbar-title class="registration__title">Создать учётную запись</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text class="input-default">
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col
+                  xs="6"
+                  class="pr-0 py-0"
+                >
+                  <v-text-field
+                    v-model="firstname"
+                    :rules="nameRules"
+                    label="Имя"
+                    name="name"
+                    color="#757575"
+                    prepend-inner-icon="mdi-account-outline"
+                    type="text"
+                    required
+                  />
+                </v-col>
+                <v-col
+                  xs="6"
+                  class="pl-0 py-0"
+                >
+                  <v-text-field
+                    v-model="lastname"
+                    :rules="nameRules"
+                    label="Фамилия"
+                    name="lastname"
+                    color="#757575"
+                    type="text"
+                    required
+                  />
+                </v-col>
+              </v-row>
+
               <v-text-field
-                label="Login"
-                name="login"
-                prepend-icon="mdi-account-outline"
-                type="text"
+                v-model="email"
+                :rules="emailRules"
+                label="Адрес электронной почты"
+                name="email"
+                color="#757575"
+                prepend-inner-icon="mdi-email-outline"
+                class="mt-0"
+                required
+              />
+              <v-text-field
+                v-model="password"
+                label="Пароль"
+                name="password"
+                color="#757575"
+                prepend-inner-icon="mdi-lock-outline"
+                type="password"
+                class="mt-0"
+                required
               />
 
               <v-text-field
-                id="password"
-                label="Password"
-                name="password"
-                prepend-icon="mdi-lock"
+                v-model="repeatPassword"
+                label="Повторите пароль"
+                name="repeatPassword"
+                color="#757575"
+                prepend-inner-icon="mdi-lock-outline"
                 type="password"
+                class="mt-0"
+                required
               />
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="primary">Регистрация</v-btn>
-          </v-card-actions>
+            </v-card-text>
+            <v-card-actions class="mx-0 px-0">
+              <v-spacer />
+              <v-btn
+                :disabled="!valid"
+                color="rgb(240, 55, 58)"
+                class="text-capitalize white--text px-4"
+                @click="validate"
+              >
+                Регистрация
+                <v-icon
+                  color="#ffffff"
+                  right
+                  dark
+                  class="pl-2"
+                >mdi-arrow-right</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -52,22 +119,48 @@
 
 <script>
   export default {
-    data() {
-      return {
-        disabled: true
-      }
-    }
+    data: () => ({
+      valid: false,
+      firstname: '',
+      lastname: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => v.length <= 10 || 'Name must be less than 10 characters',
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid',
+      ],
+      password: '',
+      repeatPassword: ''
+    })
   }
 </script>
 
 <style lang="scss" scoped>
   .registration {
+    max-width: 430px;
+
     &__title {
       font-size: 32px;
       line-height: 44px;
       color: rgb(51, 51, 51);
       padding: 40px 0 48px;
+      overflow: visible;
     }
   }
 
+</style>
+
+<style lang="scss">
+  .input-default {
+    .v-label {
+      font-size: 12px;
+    }
+
+    .mdi-email-outline {
+      font-size: 22px;
+    }
+  }
 </style>
