@@ -29,7 +29,7 @@
   </v-app>
 </template>
 
-<style>
+<style scoped>
 
   .content {
     height: 100%;
