@@ -36,7 +36,7 @@
                 >
                   <v-text-field
                     v-model="firstname"
-                    :rules="nameRules"
+                    :rules="[required]"
                     label="Имя"
                     name="name"
                     color="#757575"
@@ -51,7 +51,7 @@
                 >
                   <v-text-field
                     v-model="lastname"
-                    :rules="nameRules"
+                    :rules="[required]"
                     label="Фамилия"
                     name="lastname"
                     color="#757575"
@@ -63,7 +63,7 @@
 
               <v-text-field
                 v-model="email"
-                :rules="emailRules"
+                :rules="[required, emailRules]"
                 label="Адрес электронной почты"
                 name="email"
                 color="#757575"
@@ -73,6 +73,7 @@
               />
               <v-text-field
                 v-model="password"
+                :rules="[required, passwordRules]"
                 label="Пароль"
                 name="password"
                 color="#757575"
@@ -84,6 +85,7 @@
 
               <v-text-field
                 v-model="repeatPassword"
+                :rules="[required]"
                 label="Повторите пароль"
                 name="repeatPassword"
                 color="#757575"
@@ -97,6 +99,8 @@
               <v-spacer />
               <v-btn
                 :disabled="!valid"
+                to="/"
+                nuxt
                 color="rgb(240, 55, 58)"
                 class="text-capitalize white--text px-4"
                 @click="validate"
@@ -120,21 +124,23 @@
 <script>
   export default {
     data: () => ({
-      valid: false,
+      valid: true,
       firstname: '',
+      required: v => !!v || 'Поле обязательно',
       lastname: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => v.length <= 10 || 'Name must be less than 10 characters',
-      ],
       email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid',
-      ],
+      emailRules: v => /.+@.+/.test(v) || 'Неверный адрес электронной почты. Введите верный адрес электронной почты',
       password: '',
+      passwordRules: v => v.length >= 8 || 'Неверный пароль. Пароль должен быть не короче 8 символов',
       repeatPassword: ''
-    })
+    }),
+    methods: {
+      validate() {
+        if (this.$refs.form.validate()) {
+          this.snackbar = true
+        }
+      }
+    }
   }
 </script>
 
